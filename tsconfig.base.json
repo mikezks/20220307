@@ -22,6 +22,9 @@
       "@flight-workspace/luggage/feature-checkin": [
         "libs/luggage/feature-checkin/src/index.ts"
       ],
+      "@flight-workspace/luggage/ui-card": [
+        "libs/luggage/ui-card/src/index.ts"
+      ],
       "@flight-workspace/passenger/domain": [
         "libs/passenger/domain/src/index.ts"
       ],
