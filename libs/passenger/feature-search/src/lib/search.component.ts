@@ -19,6 +19,6 @@ export class SearchComponent {
   }
 
   toggleSelection(p: Passenger) {
-    this.selectedPassenger = p;
+    this.selectedPassenger = p === this.selectedPassenger ? undefined : p;
   }
 }
