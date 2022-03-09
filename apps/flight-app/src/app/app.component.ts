@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import * as FlightBookingModule from './flight-booking';
+// import * as FlightBookingModule from './flight-booking';
 
 @Component({
   /* standalone: true,
