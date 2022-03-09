@@ -19,12 +19,13 @@ import { RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { reducers, metaReducers } from './+state';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
+// import { FlightBookingModule } from './flight-booking/flight-booking.module';
 
 @NgModule({
   imports: [
     BrowserModule,
     HttpClientModule,
-    // FlightBookingModule,
+    // environment.shallLoadFlightBooking ? FlightBookingModule : [],
 
     BrowserAnimationsModule,
     FlightCancellingModule,
