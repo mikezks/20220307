@@ -1,20 +1,25 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Flight } from '@flight-workspace/flight-lib';
-import { debounceTime, delay, distinctUntilChanged, filter, map, Observable, of, switchMap, tap } from 'rxjs';
+import { catchError, debounceTime, delay, distinctUntilChanged, filter, map, Observable, of, Subscription, switchMap, tap, timer } from 'rxjs';
 
 @Component({
   selector: 'flight-workspace-flight-typeahead',
   templateUrl: './flight-typeahead.component.html',
   styleUrls: ['./flight-typeahead.component.css']
 })
-export class FlightTypeaheadComponent {
+export class FlightTypeaheadComponent implements OnDestroy {
   control = new FormControl();
   flights$: Observable<Flight[]> = this.getInitialStream();
   loading = false;
+  subscription = new Subscription();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.subscription.add(
+      timer(0, 1_000).subscribe(console.log)
+    );
+  }
 
   getInitialStream(): Observable<Flight[]> {
     /**
@@ -34,7 +39,9 @@ export class FlightTypeaheadComponent {
        * Stream 2: Backend API call -> Flight array
        * - Data Provider
        */
-      switchMap(city => this.load(city)),
+      switchMap(city => this.load(city).pipe(
+        catchError(() => of([]))
+      )),
       // delay(1000),
       // Side-effect
       tap(() => this.loading = false),
@@ -53,5 +60,9 @@ export class FlightTypeaheadComponent {
                         .set('Accept', 'application/json');
 
     return this.http.get<Flight[]>(url, {params, headers});
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
